@@ -22,4 +22,14 @@ body {
   width: 100%;
   flex-direction: column;
   align-items: center;
+  gap: 35px;
+}
+
+.not-found {
+  font-size: 3rem;
+  margin: auto;
+}
+
+.hide {
+  display: none;
 }
