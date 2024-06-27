@@ -1,14 +1,16 @@
 import { List } from "../databases/db.js";
 
 export async function createList(req, res) {
-  const { title, detail } = req.body;
+  const listId = req.params.id;
+  const { name, content } = req.body;
   const userId = req.session.userId;
   try {
-    const newList = new List({ userId, title, detail });
+    const newList = new List({ listId, userId, name, content });
     await newList.save();
     res.status(201).json(newList);
   } catch (error) {
-    res.status(400).json({ error: "Failed to create list" });
+    console.log(error);
+    res.status(500).json({ error: "Failed to create list" });
   }
 }
 export async function returnLists(req, res) {
@@ -23,34 +25,36 @@ export async function returnLists(req, res) {
 
 export async function deleteList(req, res) {
   try {
-    const list = await List.deleteOne({ _id: id });
-    res.status(200).json("deleted");
+    const listId = req.params.id;
+    const list = await List.deleteOne({ listId: listId });
+    res.status(200).json({ success: true });
   } catch (error) {
     res.status(400).json({ error: "Failed to create list" });
   }
 }
 
 export async function updateList(req, res) {
-  const { title, detail, id } = req.body;
+  const { name, content } = req.body;
+  const listId = req.param.id;
   try {
-    if (title && detail) {
+    if (name && content) {
       const updatedList = await List.findByIdAndUpdate(
-        userId,
-        { title, detail },
+        listId,
+        { name, content },
         { new: true, runValidators: true }
       );
     }
-    if (title && !detail) {
+    if (name && !content) {
       const updatedList = await List.findByIdAndUpdate(
         id,
-        { title },
+        { name },
         { new: true, runValidators: true }
       );
     }
-    if (!title && detail) {
+    if (!name && content) {
       const updatedList = await List.findByIdAndUpdate(
         id,
-        { detail },
+        { content },
         { new: true, runValidators: true }
       );
     }

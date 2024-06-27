@@ -4,7 +4,7 @@ import {
   validateLoginSchema,
 } from "../utils/utils.js";
 
-export async function validateUser(req, res, next) {
+export async function validateRegister(req, res, next) {
   try {
     const data = await validateUserSchema.validate(
       {

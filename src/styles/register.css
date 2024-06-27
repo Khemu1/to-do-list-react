@@ -1,12 +1,14 @@
 form.register-form {
   display: flex;
+  width: max-content;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
   background-color: #2f343f;
   padding: 20px;
   border-radius: 10px;
   margin-block: auto;
 }
+
 form.register-form h2 {
   display: flex;
   justify-content: center;
@@ -16,9 +18,10 @@ form.register-form h2 {
   line-height: 35px;
   margin: auto;
 }
-form.register-form > div {
+form.register-form .input-field {
+  position: relative;
   display: grid;
-  grid-template-columns: 115px 150px;
+  grid-template-columns: 115px auto;
   gap: 10px;
   align-items: center;
   font-size: 1.2rem;
@@ -27,7 +30,21 @@ form.register-form input {
   border: none;
   border-bottom: 1px solid white;
   background-color: transparent;
-  font-size: 1.2rem;
+  width: 200px;
+  font-size: 1.1rem;
+}
+form.register-form .error {
+  display: flex;
+  color: red;
+  font-size: 0.8rem;
+  width: 200px;
+  margin-left: auto;
+  height: max-content;
+  text-wrap: wrap;
+}
+
+form.register-form .error-field {
+  border-bottom: 1px solid red;
 }
 form.register-form input:focus-within {
   outline: none;

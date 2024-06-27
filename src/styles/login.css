@@ -1,5 +1,7 @@
 form.login-form {
   display: flex;
+  max-width: 400px;
+  max-height: 300px;
   flex-direction: column;
   gap: 20px;
   background-color: #2f343f;
@@ -13,7 +15,7 @@ form.login-form h2 {
 }
 form.login-form > div {
   display: grid;
-  grid-template-columns: auto 150px;
+  grid-template-columns: 89px auto;
   gap: 10px;
   align-items: center;
   font-size: 1.2rem;
@@ -22,12 +24,20 @@ form.login-form input {
   border: none;
   border-bottom: 1px solid white;
   background-color: transparent;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  width: 200px;
 }
 form.login-form input:focus-within {
   outline: none;
 }
-
+form.login-form .error {
+  color: red;
+  margin: auto;
+  font-size: 1.1rem;
+}
+form.login-form .error-field {
+  border-bottom: 1px solid red;
+}
 form.login-form button {
   display: flex;
   justify-content: center;

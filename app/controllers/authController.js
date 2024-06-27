@@ -1,7 +1,6 @@
 import { User } from "../databases/db.js";
 
 export async function register(req, res) {
-  console.log(req.validatedData);
   try {
     let checkEmail = await User.findOne({
       email: req.validatedData.email,
@@ -32,7 +31,7 @@ export async function register(req, res) {
 
     req.session.userId = user._id.toString();
 
-    res.status(201).json({ redirect: "/api/pages/home" });
+    return res.status(200).json({ success: true });
   } catch (error) {
     console.error(error);
     return res.status(500).json(error);
@@ -40,7 +39,6 @@ export async function register(req, res) {
 }
 
 export async function login(req, res) {
-  console.log(req.validatedData);
   try {
     const user = await User.findOne({
       email: req.validatedData.email,
@@ -49,6 +47,7 @@ export async function login(req, res) {
     if (user) {
       console.log(user._id.toString());
       req.session.userId = user._id.toString();
+      console.log("userId from login method", req.session.userId);
       return res.status(200).json("found");
     }
     return res.status(400).json({

@@ -3,6 +3,7 @@ main {
   width: 100%;
   height: 100%;
   gap: 10px;
+  overflow: hidden;
 }
 section {
   display: flex;
@@ -16,19 +17,54 @@ div.lists {
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 10px;
+  gap: 15px;
   font-size: 1.3rem;
+  overflow-y: scroll;
+  padding-inline-end: 20px;
 }
 .list {
-  background-color: #20232a;
-  padding: 7px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   border-radius: 10px;
+}
+.list-field {
+  display: flex;
+  width: 100%;
+  padding: 10px 7px;
   font-size: 1.3rem;
   border: none;
   text-indent: 5px;
   cursor: pointer;
+  border-radius: 10px;
 }
-.list:focus-within {
+.selected {
+  background-color: #20232a;
+}
+.delete {
+  position: absolute;
+  display: flex;
+  background-color: transparent;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  width: max-content;
+  right: calc(0% + 10px);
+  cursor: pointer;
+}
+div.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+div.head p {
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.list-field:focus-within {
   outline: none;
 }
 div.detail {
@@ -45,6 +81,7 @@ div.detail {
   height: 100%;
   resize: none;
 }
+
 .list-detail:focus-within {
   outline: none;
 }
@@ -52,10 +89,10 @@ div.detail .buttons {
   display: flex;
   justify-content: space-between;
 }
-.buttons button {
+button.save {
   display: flex;
   justify-content: center;
-  width: 100px;
+  /* width: 100px; */
   padding: 7px 20px;
   background-color: rgb(235, 8, 53);
   border-radius: 10px;
@@ -64,6 +101,6 @@ div.detail .buttons {
   transition: 250ms ease-out;
   font-size: 1rem;
 }
-.buttons button:hover {
+button.save:hover {
   background-color: rgb(10, 59, 192);
 }

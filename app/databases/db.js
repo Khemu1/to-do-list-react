@@ -20,24 +20,29 @@ const userSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
-  passowrd: {
+  password: {
     type: String,
     required: true,
   },
 });
 
 const listSchema = new mongoose.Schema({
+  listId: {
+    type: String,
+    unique: true,
+    required: true,
+  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    required: true,
   },
-  title: {
+  name: {
     type: String,
     required: true,
   },
-  details: {
+  content: {
     type: String,
-    required: true,
   },
 });
 
