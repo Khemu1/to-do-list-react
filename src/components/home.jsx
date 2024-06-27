@@ -22,13 +22,14 @@ function Home() {
   } = useAddList();
   const { updateDataStatus, updateError, update } = updateList();
   const { deleteStatus, deleteError, deleteL } = deleteList();
+  document.title = "Home";
 
-const handleAddList = () => {
-  const newList = { listId: nanoid(), name: "New List", content: "" };
-  setLists((prevLists) => [...prevLists, newList]);
-  setOriginalLists((prevOriginalLists) => [...prevOriginalLists, newList]);
-  addList(newList.listId, newList);
-};
+  const handleAddList = () => {
+    const newList = { listId: nanoid(), name: "New List", content: "" };
+    setLists((prevLists) => [...prevLists, newList]);
+    setOriginalLists((prevOriginalLists) => [...prevOriginalLists, newList]);
+    addList(newList.listId, newList);
+  };
 
   const isListChanged = (list, originalList) => {
     return (
@@ -36,21 +37,20 @@ const handleAddList = () => {
     );
   };
 
+  const handleSave = (id) => {
+    const newList = lists.find((list) => list.listId === id);
+    const originalList = originalLists.find((list) => list.listId === id);
 
-const handleSave = (id) => {
-  const newList = lists.find((list) => list.listId === id);
-  const originalList = originalLists.find((list) => list.listId === id);
+    if (isListChanged(newList, originalList)) {
+      update(id, newList);
+    } else {
+      console.log("No changes to save.");
+    }
 
-  if (isListChanged(newList, originalList)) {
-    update(id, newList);
-  } else {
-    console.log("No changes to save.");
-  }
-
-  setOriginalLists((prevOriginalLists) =>
-    prevOriginalLists.map((list) => (list.listId === id ? newList : list))
-  );
-};
+    setOriginalLists((prevOriginalLists) =>
+      prevOriginalLists.map((list) => (list.listId === id ? newList : list))
+    );
+  };
 
   const handleSelect = (id) => {
     const selectedList = lists.find((list) => list.listId === id);
