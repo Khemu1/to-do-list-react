@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 function Login() {
   const navigateTo = useNavigate();
   const [email, setEmail] = useState("alghost900020@gmail.com");
-  const [password, setPassowrd] = useState("Kh9513572680");
+  const [password, setPassowrd] = useState("Kh951357268");
   const [data, setData] = useState(null);
   const { dataStatus, error } = useLogin(data);
   document.title = "Login";

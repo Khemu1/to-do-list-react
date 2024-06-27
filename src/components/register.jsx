@@ -18,7 +18,7 @@ function Register() {
   return (
     <>
       <form className="register-form" onSubmit={(e) => handleRegister(e)}>
-        <h2>Register Now and start planning </h2>
+        <h2>Register Now and Start Planning </h2>
         <div className="register-form-input">
           <div className="input-field">
             <label htmlFor="email">Email</label>

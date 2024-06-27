@@ -119,22 +119,15 @@ export function getUserLists() {
       abortController.abort();
     }
   };
-
-  useEffect(() => {
-    fetchLists();
-  }, []);
-  const refetchLists = () => {
-    fetchLists();
-  };
-
-  return { data, error, refetchLists };
+  return { data, error, fetchLists };
 }
 
 export function useAddList() {
   const [dataStatus, setDataStatus] = useState(false);
   const [error, setError] = useState(null);
+  const navigateTo = useNavigate();
 
-  const addList = async (id,listData) => {
+  const addList = async (id, listData) => {
     try {
       const response = await fetch(`/api/addList/${id}`, {
         method: "POST",
@@ -143,12 +136,11 @@ export function useAddList() {
         },
         body: JSON.stringify(listData),
       });
-
       const result = await response.json();
-
       if (response.ok) {
         setDataStatus(true);
       } else {
+        navigateTo("/");
         setError(result.error || "Failed to add list.");
       }
     } catch (error) {
@@ -157,4 +149,57 @@ export function useAddList() {
   };
 
   return { addList, dataStatus, error };
+}
+
+export function updateList() {
+  const [updateDataStatus, setUpdateDataStatus] = useState(false);
+  const [updateError, setUpdateError] = useState(null);
+  const navigateTo = useNavigate();
+
+  const update = async (id, listData) => {
+    console.log(id, listData.name);
+    try {
+      const response = await fetch(`/api/list/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: listData.name,
+          content: listData.content,
+        }),
+      });
+      const result = await response.json();
+      if (response.ok) {
+        setUpdateDataStatus(true);
+      } else {
+        navigateTo("/");
+        setUpdateError(result.error || "Failed to update list.");
+      }
+    } catch (error) {
+      setUpdateError(error.message || "Failed to update list.");
+    }
+  };
+  return { update, updateDataStatus, updateError };
+}
+
+export function deleteList() {
+  const [deleteStatus, setDeleteStatus] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
+  const navigateTo = useNavigate();
+  const deleteL = async (id) => {
+    try {
+      const response = await fetch(`/api/list/${id}`, { method: "DELETE" });
+      const result = await response.json();
+      if (response.ok) {
+        setDeleteStatus(true);
+      } else {
+        navigateTo("/");
+        setDeleteError(result.error || "Failed to delete list.");
+      }
+    } catch (error) {
+      setDeleteError(error.message || "Failed to delete list.");
+    }
+  };
+  return { deleteL, deleteStatus, deleteError };
 }

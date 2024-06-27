@@ -42,16 +42,34 @@ div.lists {
 .selected {
   background-color: #20232a;
 }
+button.edit {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 24px;
+  border-radius: 50px;
+  overflow: hidden;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  right: calc(0% + 45px);
+  overflow: hidden;
+}
+button img {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
 .delete {
   position: absolute;
   display: flex;
+  width: 24px;
   background-color: transparent;
   border: none;
-  font-size: 1.2rem;
   font-weight: bold;
-  width: max-content;
-  right: calc(0% + 10px);
+  right: calc(0% + 5px);
   cursor: pointer;
+  padding: 0;
 }
 div.head {
   display: flex;
@@ -79,7 +97,10 @@ div.detail {
 .list-detail {
   width: 100%;
   height: 100%;
+  font-size: 1.3rem;
   resize: none;
+  border: none;
+  padding: 5px;
 }
 
 .list-detail:focus-within {
@@ -88,19 +109,4 @@ div.detail {
 div.detail .buttons {
   display: flex;
   justify-content: space-between;
-}
-button.save {
-  display: flex;
-  justify-content: center;
-  /* width: 100px; */
-  padding: 7px 20px;
-  background-color: rgb(235, 8, 53);
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  transition: 250ms ease-out;
-  font-size: 1rem;
-}
-button.save:hover {
-  background-color: rgb(10, 59, 192);
 }

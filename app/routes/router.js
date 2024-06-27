@@ -3,7 +3,12 @@ import multer from "multer";
 let upload = multer();
 import { isAuthenticated, logout } from "../middlewares/authentication.js";
 import { login, register } from "../controllers/authController.js";
-import { createList, returnLists } from "../controllers/listController.js";
+import {
+  createList,
+  returnLists,
+  deleteList,
+  updateList,
+} from "../controllers/listController.js";
 import {
   validateLogin,
   validateRegister,
@@ -21,6 +26,6 @@ router.get("/logout", logout);
 router.post("/register", validateRegister, register);
 router.post("/addList/:id", isAuthenticated, createList);
 router.get("/lists", isAuthenticated, returnLists);
-router.delete("/list", isAuthenticated, returnLists);
-router.put("/list", isAuthenticated, returnLists);
+router.delete("/list/:id", isAuthenticated, deleteList);
+router.put("/list/:id", isAuthenticated, updateList);
 export default router;

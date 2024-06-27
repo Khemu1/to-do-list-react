@@ -1,62 +1,89 @@
 import "../styles/home.css";
-import React, { useContext, useEffect, useState } from "react";
-import { getUserLists, useAddList } from "../hooks/APIs";
+import React, { useEffect, useState } from "react";
+import {
+  getUserLists,
+  useAddList,
+  updateList,
+  deleteList,
+} from "../hooks/APIs";
+import ListComp from "./List";
+import ListDetail from "./ListDetail";
 import { nanoid } from "nanoid";
+
 function Home() {
+  const [originalLists, setOriginalLists] = useState([]);
   const [lists, setLists] = useState([]);
-  const { data, error } = getUserLists();
+  const { data, error, fetchLists } = getUserLists();
   const [currentList, setCurrentList] = useState(null);
   const {
     addList,
     dataStatus: addListStatus,
     error: addListError,
   } = useAddList();
+  const { updateDataStatus, updateError, update } = updateList();
+  const { deleteStatus, deleteError, deleteL } = deleteList();
 
-  const handleAddList = () => {
-    const newList = { id: nanoid(), name: "New List", content: "" };
-    setLists((prevLists) => [...prevLists, newList]);
-    console.log(newList);
-    addList(newList.id,newList);
+const handleAddList = () => {
+  const newList = { listId: nanoid(), name: "New List", content: "" };
+  setLists((prevLists) => [...prevLists, newList]);
+  setOriginalLists((prevOriginalLists) => [...prevOriginalLists, newList]);
+  addList(newList.listId, newList);
+};
+
+  const isListChanged = (list, originalList) => {
+    return (
+      list.name !== originalList.name || list.content !== originalList.content
+    );
   };
-  const handleSave = (id) => {
-    const newList = lists.find((list) => list.id === id);
-    console.log(newList);
-  };
+
+
+const handleSave = (id) => {
+  const newList = lists.find((list) => list.listId === id);
+  const originalList = originalLists.find((list) => list.listId === id);
+
+  if (isListChanged(newList, originalList)) {
+    update(id, newList);
+  } else {
+    console.log("No changes to save.");
+  }
+
+  setOriginalLists((prevOriginalLists) =>
+    prevOriginalLists.map((list) => (list.listId === id ? newList : list))
+  );
+};
+
   const handleSelect = (id) => {
-    lists.map((list) => {
-      if (list.id === id) {
-        setCurrentList(list);
-      }
-    });
+    const selectedList = lists.find((list) => list.listId === id);
+    setCurrentList(selectedList);
   };
-  const handleNameChane = (id, newName) => {
+
+  const handleNameChange = (id, newName) => {
     setLists((prevLists) =>
       prevLists.map((list) =>
-        list.id === id ? { ...list, name: newName } : list
+        list.listId === id ? { ...list, name: newName } : list
       )
     );
   };
-  const handleListEdit = (e) => {
-    if (currentList) {
-      const newContent = e.target.value;
-      setLists((prevLists) =>
-        prevLists.map((list) =>
-          list.id === currentList.id ? { ...list, content: newContent } : list
-        )
-      );
-      setCurrentList((prev) => ({ ...prev, content: newContent }));
-    }
-  };
+
   const handleDelete = (id) => {
-    setLists((prevLists) => prevLists.filter((list) => list.id !== id));
+    deleteL(id);
+    setLists((prevLists) => prevLists.filter((list) => list.listId !== id));
     if (currentList && currentList.id === id) {
       setCurrentList(null);
     }
   };
 
   useEffect(() => {
-    setLists(data);
+    fetchLists();
   }, []);
+
+  useEffect(() => {
+    if (data) {
+      setLists(data);
+      const copiedData = JSON.parse(JSON.stringify(data));
+      setOriginalLists(copiedData);
+    }
+  }, [data]);
 
   return (
     <>
@@ -68,50 +95,39 @@ function Home() {
           </div>
           <div className="lists">
             {lists.map((list) => (
-              <div className="list" key={list.id}>
-                <input
-                  className={
-                    currentList && currentList.id === list.id
-                      ? "list-field selected"
-                      : "list-field"
-                  }
-                  value={list.name}
-                  onClick={() => handleSelect(list.id)}
-                  onChange={(e) => handleNameChane(list.id, e.target.value)}
-                />
-                <button
-                  value={list.id}
-                  className="delete"
-                  onClick={(e) => handleDelete(e.target.value)}
-                >
-                  x
-                </button>
-              </div>
+              <ListComp
+                key={list.listId}
+                list={list}
+                onSelect={handleSelect}
+                onDelete={handleDelete}
+                onNameChange={handleNameChange}
+                currentList={currentList}
+                onSave={handleSave}
+              />
             ))}
           </div>
         </section>
         <div className="detail">
-          {currentList && (
-            <>
-              <textarea
-                name="list-detail"
-                id="list-detail"
-                className="list-detail"
-                value={currentList.content}
-                onChange={handleListEdit}
-              ></textarea>
-              <button
-                className="save"
-                value={currentList.id}
-                onClick={(e) => handleSave(e.target.value)}
-              >
-                Save
-              </button>
-            </>
-          )}
+          <ListDetail
+            list={currentList}
+            onContentChange={(id, newContent) => {
+              setLists((prev) =>
+                prev.map((list) =>
+                  list.listId === id ? { ...list, content: newContent } : list
+                )
+              );
+              setCurrentList((prev) => ({ ...prev, content: newContent }));
+            }}
+          />
         </div>
       </main>
+
+      {/* Display errors */}
+      {addListError && <p className="error">{addListError}</p>}
+      {updateError && <p className="error">{updateError}</p>}
+      {deleteError && <p className="error">{deleteError}</p>}
     </>
   );
 }
+
 export default Home;
