@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import Nav from "../components/nav";
+import Nav from "../components/Nav";
 import { useNavigate } from "react-router-dom";
 
 const UserContext = createContext();

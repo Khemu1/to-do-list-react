@@ -1,10 +1,10 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Login from "./components/login.jsx";
-import Register from "./components/register.jsx";
+import Login from "./components/Login.jsx";
+import Register from "./components/Register.jsx";
 import NotFound from "./components/404.jsx";
-import Nav from "./components/nav.jsx";
-import Home from "./components/home.jsx";
+import Nav from "./components/Nav.jsx";
+import Home from "./components/Home.jsx";
 import { UserProvider } from "./contexts/UserContext";
 
 import "./styles/App.css";

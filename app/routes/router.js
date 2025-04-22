@@ -1,6 +1,4 @@
 import express from "express";
-import multer from "multer";
-let upload = multer();
 import { isAuthenticated, logout } from "../middlewares/authentication.js";
 import { login, register } from "../controllers/authController.js";
 import {
